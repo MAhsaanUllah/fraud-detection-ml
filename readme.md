@@ -40,7 +40,7 @@
 
 ### Data Pipeline Flow
 
-```mermaid
+
 graph TD
     A[Raw Data (CSV Files)] --> B[Data Cleaning & Preprocessing]
     B --> C[Feature Engineering]
