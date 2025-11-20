@@ -45,7 +45,7 @@ Key functionalities include:
 
 ```mermaid
 graph TD
-    A[Raw Data (CSV Files)] --> B[Data Cleaning & Preprocessing]
+    A[Raw Data] --> B[Cleaning & Preprocessing]
     B --> C[Feature Engineering]
     C --> D{ML Models}
     C --> E[Duplicate Removal]
@@ -55,7 +55,7 @@ graph TD
     G --> I[Fraud Scoring]
     H --> I
     I --> J[Alert Generation]
-    I --> K[Streamlit Web App / Dashboard]
+    I --> K[Streamlit Dashboard]
     E --> I
     F --> I
 ```
