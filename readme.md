@@ -5,17 +5,21 @@
 [![Machine Learning](https://img.shields.io/badge/ML-Anomaly%20Detection-orange)](https://scikit-learn.org/stable/modules/outlier_detection.html)
 [![Streamlit](https://img.shields.io/badge/Dashboard-Streamlit-red)](https://streamlit.io/)
 [![Scikit-learn](https://img.shields.io/badge/Scikit--learn-yellow)](https://scikit-learn.org/)
-[![Status](https://img.shields.io/badge/Production-Ready-brightgreen)](#)
+[![Status](https://img.shields.io/badge/Status-Academic%20Project-blue)](#)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 
-📊 Real-time Fraud Detection Dashboard
+📊 Interactive Fraud Detection Dashboard
 --------------------------------------
 
 ![Dashboard Preview](images/dashboard_screenshot.png)
 
 ### 🎯 Project Overview
 
-**Final Internship Project** – An advanced machine learning system to detect fraudulent **job applications** using ensemble **anomaly detection algorithms**. The system identifies suspicious patterns, duplicate entries, and behavioral anomalies in real time with a professional web dashboard for monitoring and analysis.
+**Final Internship Project** – An advanced machine learning system to detect fraudulent
+**job applications** using ensemble
+**anomaly detection algorithms**. The system identifies suspicious patterns, duplicate entries, and behavioral anomalies in real time with a professional web dashboard for monitoring and analysis.
+> Built as part of an academic internship project to demonstrate applied machine learning, data preprocessing, and dashboard development.
+
 
 > 🔍 **Objective:** Identify anomalies in internship applications to prevent fake entries using machine learning (**Isolation Forest**, **K-Means Clustering**) and implement alerts for suspicious behavior.
 
@@ -27,6 +31,7 @@ Key functionalities include:
 - Displaying insights via a Streamlit dashboard
 
 **Objective:** Prevent fake applications using Isolation Forest + K-Means and an automated scoring pipeline.
+
 
 🚀 Key Features
 --------------
@@ -75,9 +80,9 @@ graph TD
 - **Similarity Scoring**: Fuzzy matching for near-duplicate detection
 - **Temporal Patterns**: Behavioral timing and velocity analysis
 - **Text Analysis**: TF-IDF vectorization and semantic similarity
-- Semantic text scoring
 
-### Performance Summary
+
+### ✅ Experimental Results (Offline Evaluation)
 
 | Metric          | Value  |
 |-----------------|--------|
@@ -170,7 +175,7 @@ jupyter notebook Fraud_Detection_Applications.ipynb
 
 - **Total Applications:** 17,592 entries
 - **Features:** 16 columns including text, categorical, and numerical data
-- **Fraud Rate:** 4.8% baseline (866 fraudulent entries)
+- - **Anomaly Ratio:** ~5% (model-flagged suspicious entries)
 - **Data Types:** Job titles, locations, descriptions, requirements, metadata
 
 🎯 Business Impact
