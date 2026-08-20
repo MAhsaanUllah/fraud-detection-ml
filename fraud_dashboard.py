@@ -114,7 +114,7 @@ def load_data():
             'fraud_score': scores,
             'title_freq_scaled': np.random.exponential(0.5, N),
             'max_title_similarity_scaled': np.random.beta(1.5, 5, N),
-            'submission_date': pd.date_range('2024-01-01', periods=N, freq='H'),
+            'submission_date': pd.date_range('2024-01-01', periods=N, freq='h'),
             'response_time_hours': np.random.exponential(24, N)
         })
 

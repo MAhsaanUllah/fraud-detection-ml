@@ -32,6 +32,11 @@ Key functionalities include:
 
 **Objective:** Prevent fake applications using Isolation Forest + K-Means and an automated scoring pipeline.
 
+### ✨ Highlights
+
+- **Ensemble fraud detection** (Isolation Forest + K-Means); 94.2% precision / 91.9% F1 on 17.5K records.
+- **Live dashboard:** [fraud-detection-ml.streamlit.app](https://fraud-detection-ml-fhjg3esgch6czxv8tbpuez.streamlit.app/)
+- **Full pipeline:** data cleaning, feature engineering, model evaluation, Streamlit dashboard.
 
 🚀 Key Features
 --------------
