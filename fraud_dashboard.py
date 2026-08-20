@@ -4,6 +4,7 @@ import numpy as np
 import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
+import os
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -73,6 +74,7 @@ st.markdown("""
 # ======================================================================
 FULL_DATA_FILE = "fraud_detection_full_dataset.csv"
 SUSPICIOUS_DATA_FILE = "fraud_detection_suspicious.csv"
+JOB_FRAUDS_FILE = "Job_Frauds.csv"
 
 @st.cache_data(ttl=3600)
 def load_data():
@@ -144,6 +146,15 @@ def load_data():
         return df_full, df_suspicious
 
     try:
+        # 1. Prefer the real Job_Frauds.csv dataset (has Fraudulent ground-truth label)
+        if os.path.exists(JOB_FRAUDS_FILE):
+            df_full = pd.read_csv(JOB_FRAUDS_FILE)
+            df_suspicious = df_full.copy()
+            df_full, df_suspicious = validate_and_enhance_data(df_full, df_suspicious)
+            st.success(f"✅ Loaded {len(df_full):,} real job applications from {JOB_FRAUDS_FILE}")
+            return df_full, df_suspicious
+
+        # 2. Fall back to the pre-processed full/suspicious CSVs
         df_full = pd.read_csv(FULL_DATA_FILE)
         df_suspicious = pd.read_csv(SUSPICIOUS_DATA_FILE)
         
@@ -161,12 +172,35 @@ def load_data():
 
 def validate_and_enhance_data(df_full, df_suspicious):
     """Validate and enhance real data with missing columns"""
-    
+
+    # --- Map Job_Frauds.csv columns to dashboard schema -----------------
+    # Job_Frauds.csv has: Job Title, Job Location, Department, Type_of_Industry,
+    # Type_of_Employment, Experience, Qualification, Fraudulent (ground-truth label)
+    if 'Fraudulent' in df_full.columns:
+        # fraud_flag from the real ground-truth label (1 = fraudulent, 0 = legit)
+        df_full['fraud_flag'] = df_full['Fraudulent'].astype(int).astype(bool)
+        # Derive a continuous fraud_score proxy (higher when fraud flagged)
+        df_full['fraud_score'] = np.where(
+            df_full['fraud_flag'],
+            np.random.uniform(0.70, 0.99, len(df_full)),
+            np.random.uniform(0.01, 0.60, len(df_full))
+        )
+
     # Ensure Industry column exists
     if 'Industry' not in df_full.columns:
-        industries = ['Technology', 'Finance', 'Healthcare', 'E-commerce', 'Education', 'Manufacturing', 'Consulting']
-        df_full['Industry'] = np.random.choice(industries, len(df_full))
-    
+        if 'Type_of_Industry' in df_full.columns:
+            df_full['Industry'] = df_full['Type_of_Industry'].fillna('Unknown')
+        else:
+            industries = ['Technology', 'Finance', 'Healthcare', 'E-commerce', 'Education', 'Manufacturing', 'Consulting']
+            df_full['Industry'] = np.random.choice(industries, len(df_full))
+
+    # Ensure Company Size exists
+    if 'Company Size' not in df_full.columns:
+        if 'Type_of_Employment' in df_full.columns:
+            df_full['Company Size'] = df_full['Type_of_Employment'].fillna('Unknown')
+        else:
+            df_full['Company Size'] = np.random.choice(['Startup', 'Small', 'Medium', 'Large', 'Enterprise'], len(df_full))
+
     # Ensure fraud_flag exists
     if 'fraud_flag' not in df_full.columns and 'fraud_score' in df_full.columns:
         threshold = np.quantile(df_full['fraud_score'], 0.95)
@@ -504,7 +538,12 @@ with filter_col2:
     if 'Job Location' in df_suspicious.columns:
         unique_locations = df_suspicious['Job Location'].unique().tolist()
         if unique_locations:
-            location_options.extend(sorted(unique_locations))
+            # Limit to top 50 most common locations to keep dropdown usable
+            if len(unique_locations) > 50:
+                top_locations = df_suspicious['Job Location'].value_counts().head(50).index.tolist()
+                location_options.extend(sorted(top_locations))
+            else:
+                location_options.extend(sorted(unique_locations))
     selected_location = st.selectbox("Location Filter", location_options)
 
 with filter_col3:
