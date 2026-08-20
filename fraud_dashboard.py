@@ -83,9 +83,13 @@ def load_data():
         N = 17592
 
         # Generate realistic fraud scores
-        normal_scores = np.random.beta(2, 8, int(N * 0.92))
-        suspicious_scores = np.random.beta(8, 2, int(N * 0.06))
-        fraud_scores = np.random.beta(15, 2, int(N * 0.02))
+        n_normal = int(N * 0.92)
+        n_suspicious = int(N * 0.06)
+        n_fraud = N - n_normal - n_suspicious  # ensures total == N
+
+        normal_scores = np.random.beta(2, 8, n_normal)
+        suspicious_scores = np.random.beta(8, 2, n_suspicious)
+        fraud_scores = np.random.beta(15, 2, n_fraud)
 
         scores = np.concatenate([normal_scores, suspicious_scores, fraud_scores])
         np.random.shuffle(scores)
