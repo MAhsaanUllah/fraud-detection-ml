@@ -148,7 +148,9 @@ def load_data():
     try:
         # 1. Prefer the real Job_Frauds.csv dataset (has Fraudulent ground-truth label)
         if os.path.exists(JOB_FRAUDS_FILE):
-            df_full = pd.read_csv(JOB_FRAUDS_FILE)
+            # File contains some non-UTF-8 bytes (Latin-1/Windows-1252 content);
+            # replace invalid sequences instead of failing on decode.
+            df_full = pd.read_csv(JOB_FRAUDS_FILE, encoding='utf-8', encoding_errors='replace')
             df_suspicious = df_full.copy()
             df_full, df_suspicious = validate_and_enhance_data(df_full, df_suspicious)
             st.success(f"✅ Loaded {len(df_full):,} real job applications from {JOB_FRAUDS_FILE}")
